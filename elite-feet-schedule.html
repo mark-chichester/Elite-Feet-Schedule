@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<title>Mark's Teaching Schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+:root{
+  --ground:#F1F4F7; --surface:#FFFFFF; --surface-2:#F7F9FB; --surface-3:#EDF1F5;
+  --line:#DEE4EA; --line-strong:#C6CED8;
+  --ink:#12161C; --ink-2:#525B67; --ink-3:#838C98;
+  --accent:#0078BF; --accent-ink:#FFFFFF; --accent-soft:#E2F0F9;
+  --c-class:#0078BF; --c-class-soft:#E2F0F9;
+  --c-company:#D02A38; --c-company-soft:#FCE7E8;
+  --c-camp:#7A4FBF; --c-camp-soft:#EFE8FA;
+  --c-private:#D9701C; --c-private-soft:#FDEEE0;
+  --c-comp:#0E7C86; --c-comp-soft:#DFF1F3;
+  --c-other:#98A2AE; --c-other-soft:#EEF1F4;
+  --shadow:0 1px 2px rgba(18,22,28,.06), 0 8px 24px -12px rgba(18,22,28,.18);
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1116; --surface:#171B22; --surface-2:#1D222A; --surface-3:#232933;
+    --line:#2A313B; --line-strong:#3A424E;
+    --ink:#EDF1F6; --ink-2:#A4AEBB; --ink-3:#78828F;
+    --accent:#46A8E8; --accent-ink:#06202F; --accent-soft:#132A3A;
+    --c-class:#46A8E8; --c-class-soft:#13293A;
+    --c-company:#F26A73; --c-company-soft:#331A1E;
+    --c-camp:#A98BE0; --c-camp-soft:#241D33;
+    --c-private:#F0994A; --c-private-soft:#332414;
+    --c-comp:#4FC2CE; --c-comp-soft:#102E31;
+    --c-other:#7C8794; --c-other-soft:#20262E;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1116; --surface:#171B22; --surface-2:#1D222A; --surface-3:#232933;
+  --line:#2A313B; --line-strong:#3A424E;
+  --ink:#EDF1F6; --ink-2:#A4AEBB; --ink-3:#78828F;
+  --accent:#46A8E8; --accent-ink:#06202F; --accent-soft:#132A3A;
+  --c-class:#46A8E8; --c-class-soft:#13293A;
+  --c-company:#F26A73; --c-company-soft:#331A1E;
+  --c-camp:#A98BE0; --c-camp-soft:#241D33;
+  --c-private:#F0994A; --c-private-soft:#332414;
+  --c-comp:#4FC2CE; --c-comp-soft:#102E31;
+  --c-other:#7C8794; --c-other-soft:#20262E;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3{font-family:Archivo,"Public Sans",sans-serif;margin:0;text-wrap:balance}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 72px}
+.topbar{position:sticky;top:0;z-index:40;background:var(--surface);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:13px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:13px;min-width:0}
+.brand-mark{width:48px;height:48px;flex:none;border-radius:50%;background:#fff;padding:2px;box-shadow:0 0 0 1px var(--line)}
+.brand-mark img{width:100%;height:100%;display:block}
+.brand-eyebrow{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.brand-name{font-family:Archivo;font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.brand-sub{font-size:12px;color:var(--ink-3);margin-top:1px}
+.spacer{flex:1}
+
+.toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 0 14px}
+.tabs{display:flex;background:var(--surface-3);border-radius:var(--radius);padding:3px;gap:2px}
+.tab{border:0;background:transparent;padding:7px 16px;border-radius:7px;font-weight:600;font-size:13.5px;color:var(--ink-2)}
+.tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.nav{display:flex;align-items:center;gap:6px}
+.iconbtn{border:1px solid var(--line);background:var(--surface);width:32px;height:32px;border-radius:8px;display:grid;place-items:center;color:var(--ink-2)}
+.iconbtn:hover{border-color:var(--line-strong);color:var(--ink)}
+.iconbtn:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 13px;font-weight:600;font-size:13.5px;color:var(--ink-2)}
+.btn:hover{border-color:var(--line-strong);color:var(--ink)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.range-title{font-family:Archivo;font-weight:700;font-size:17px;letter-spacing:-.01em;white-space:nowrap}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+
+.ev{display:flex;gap:10px;align-items:flex-start;position:relative;background:var(--surface);
+  border:1px solid var(--line);border-radius:8px;padding:9px 11px 9px 13px;overflow:hidden}
+.ev::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--k)}
+.ev-main{min-width:0;flex:1}
+.ev-time{font-family:"IBM Plex Mono";font-size:11px;font-weight:500;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.ev-title{font-weight:600;font-size:13.5px;line-height:1.3;margin-top:1px}
+.ev-meta{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.ev.is-other{background:var(--surface-2);border-style:dashed}
+.ev.is-other .ev-title{color:var(--ink-2);font-weight:500}
+.ev.is-comp{background:var(--k-soft);border-color:var(--k)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--k);flex:none}
+
+.day-head{padding:17px 19px;border-bottom:1px solid var(--line)}
+.day-dow{font-family:Archivo;font-size:23px;font-weight:800;letter-spacing:-.02em}
+.day-date{font-size:13px;color:var(--ink-3);margin-top:1px}
+.day-list{padding:15px 19px;display:flex;flex-direction:column;gap:8px}
+.day-list .ev{padding:12px 13px 12px 16px}
+.day-list .ev-title{font-size:15px}
+.day-list .ev-time{font-size:12px}
+
+.week-scroll{overflow-x:auto;padding-bottom:4px}
+.week-grid{display:grid;grid-template-columns:repeat(7,minmax(146px,1fr));gap:10px;min-width:1082px}
+.wcol{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);display:flex;flex-direction:column}
+.wcol.is-today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.wcol-head{padding:9px 11px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;
+  align-items:baseline;gap:6px;width:100%;background:transparent;border-left:0;border-right:0;border-top:0;cursor:pointer}
+.wcol-dow{font-family:Archivo;font-weight:700;font-size:12px;letter-spacing:.02em}
+.wcol-num{font-family:"IBM Plex Mono";font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.wcol-body{padding:8px;display:flex;flex-direction:column;gap:6px;flex:1;min-height:60px}
+.wempty{font-size:11.5px;color:var(--ink-3);padding:6px 2px;font-style:italic}
+
+.mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.mdow{background:var(--surface-2);padding:7px 9px;font-size:10px;letter-spacing:.11em;
+  text-transform:uppercase;font-weight:700;color:var(--ink-3);text-align:center}
+.mcell{background:var(--surface);min-height:104px;padding:7px 8px;display:flex;flex-direction:column;
+  gap:5px;text-align:left;border:0;border-radius:0}
+.mcell:hover{background:var(--surface-2)}
+.mcell:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.mcell.is-out{background:var(--surface-2);opacity:.5}
+.mcell.is-today .mnum{background:var(--accent);color:var(--accent-ink)}
+.mnum{font-family:"IBM Plex Mono";font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums;
+  width:21px;height:21px;display:grid;place-items:center;border-radius:50%}
+.mdots{display:flex;flex-wrap:wrap;gap:3px}
+.mchip{font-size:10px;font-weight:600;border-radius:4px;padding:1px 5px;background:var(--k-soft);
+  color:var(--k);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.mdot-only{width:6px;height:6px;border-radius:50%;background:var(--k);display:none}
+
+.banner{display:flex;gap:10px;align-items:center;padding:11px 14px;border-radius:8px;
+  background:var(--k-soft);border:1px solid var(--k);color:var(--k);font-size:13px;font-weight:600;margin:0 19px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:11.5px;color:var(--ink-2);padding:16px 0 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.empty{padding:44px 20px;text-align:center;color:var(--ink-3)}
+.empty h3{font-size:16px;color:var(--ink-2);margin-bottom:5px}
+.empty p{font-size:13.5px;margin:0}
+.foot{padding:24px 0 0;font-size:11.5px;color:var(--ink-3);display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+
+@media(max-width:720px){
+  .mcell{min-height:74px}
+  .mchip{display:none}
+  .mdot-only{display:block}
+  .mdots{gap:4px}
+}
+@media(max-width:560px){
+  .tabs{flex-wrap:wrap}
+  .tab{padding:7px 13px;font-size:13px}
+  .brand-mark{width:42px;height:42px}
+}
+
+@media print{
+  @page{margin:12mm}
+  body{background:#fff;color:#000;font-size:11px}
+  .topbar{position:static;border-bottom:2px solid #000}
+  .toolbar,.nav,.tabs,.btn,.iconbtn,.legend{display:none !important}
+  .wrap{padding:0;max-width:none}
+  .week-scroll{overflow:visible}
+  .week-grid{min-width:0;grid-template-columns:repeat(7,1fr);gap:4px}
+  .card,.wcol,.ev{box-shadow:none;break-inside:avoid}
+  .ev{padding:5px 6px 5px 8px}
+  .ev-title{font-size:10.5px}
+  .ev-time{font-size:9px}
+  .ev-meta{font-size:8.5px}
+  .print-only{display:block !important}
+}
+.print-only{display:none}
+</style>
+
+<div id="app"></div>
+
+<script>
+(function(){
+"use strict";
+
+const LOGO = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4gPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDIzLjAuNCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgLS0+IDxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAzODQgMzg0IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAzODQgMzg0OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+IDxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+IC5zdDB7ZmlsbDojRkZGRkZGO30gLnN0MXtmaWxsOiMwMDc4QkY7fSAuc3Qye2ZpbGw6I0UwMzYzRTt9IC5zdDN7ZmlsbDojNDZCMzQ5O30gLnN0NHtmaWxsOiNGMDgzMzE7fSAuc3Q1e2ZpbGw6bm9uZTtzdHJva2U6IzAwMDAwMDtzdHJva2Utd2lkdGg6NTtzdHJva2UtbWl0ZXJsaW1pdDoxMDt9IDwvc3R5bGU+IDxlbGxpcHNlIHRyYW5zZm9ybT0ibWF0cml4KDAuNzA3MSAtMC43MDcxIDAuNzA3MSAwLjcwNzEgLTc5LjUzNzQgMTkyLjAyKSIgY2xhc3M9InN0MCIgY3g9IjE5MiIgY3k9IjE5MiIgcng9IjE4OS41IiByeT0iMTg5LjUiPjwvZWxsaXBzZT4gPGc+IDxnPiA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMjY1LjcsNTAuN2MwLDAsOC40LDExLjksOS42LDI3LjljMS4yLDE2LTAuMiwxOS4xLTEuNywyNC4zYy0xLjUsNS4yLTIuMiw2LjctMi42LDkuMSBjLTAuNCwyLjQtMC4zLDUuMS0wLjMsNS4xcy0yLjQtMi43LTIuMy02YzAuMS0zLjMsMy4yLTgsMi42LTE3LjVjLTAuNi05LjUtMi4zLTI1LjQtNi4xLTI5LjhjLTMuOC00LjQtMTEuNy0xMC40LTExLjctMTAuNCBTMjY0LjYsNTIuNCwyNjUuNyw1MC43eiI+PC9wYXRoPiA8cGF0aCBkPSJNMjQ5LjEsNTMuOWMwLDAsMS41LDQuNiwzLjYsNy45YzIuMSwzLjMsNS42LDguMy0wLjUsMTMuNWMtNi4xLDUuMi0xOC4zLDkuMy0yMy4zLDEzLjNjLTQuOSw0LTEwLjIsOS43LTEwLjUsMTEuMSBjLTAuNCwxLjQsMC44LTkuNCwxMS4xLTE3LjVjMTAuMi04LjIsMTYuMS02LjQsMTcuMy0xMi4yYzEuMi01LjgsMC44LTguNi02LjYtMTEuNGMtNy40LTIuOS0xMy4yLTYuNy0xMy4yLTYuN1MyNDEsNjAsMjQ5LjEsNTMuOSB6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yMTMuOCw0MC44bDExLjgsMTBjMCwwLTIuOS0xLjMtNC45LTAuOGMtMiwwLjUtMy44LTUuOS0xNS4zLTJsLTEuMS0xLjJDMjA0LjIsNDcsMjExLjMsNDQuNywyMTMuOCw0MC44eiI+PC9wYXRoPiA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMjAzLjMsNDguNWwwLjgsMS40YzAsMC0zLjgsMS40LTMsNC4xYzAuOCwyLjgsMy40LDQuMywzLjQsNC4zbC00LjgsMi4zbC0zLjMtNiBDMTk2LjQsNTQuNiwyMDIuNSw0OS42LDIwMy4zLDQ4LjV6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTQuNCw1NS41YzAsMC02LjQsNC41LTcuOSw0LjVsMi42LDhsNC42LTIuM2MwLDAtNy42LTUuNSwwLjgtOC40TDE5NC40LDU1LjV6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xODIuNyw2Mi4ybDAuMSwyLjFjMCwwLTYuNi0wLjctMS4xLDYuNWwtNC4xLDEuOGwtMy4xLTdDMTc0LjQsNjUuNiwxODAuNCw2NC4xLDE4Mi43LDYyLjJ6Ij48L3BhdGg+IDxwYXRoIGQ9Ik0xNjYuOSw2OC45YzAsMC05LjMsMi45LTE2LDMuOWMtNi44LDAuOS0xNiw3LjUtMTguNSwxMmMtMi41LDQuNS0yLjYsMTEuMSwwLjEsMTMuNGMyLjgsMi40LDEyLjYsMi4xLDE2LjMsMi45IGMzLjcsMC43LDEzLjUsMC44LDE2LjcsNWMzLjIsNC4yLDcsNi4yLDguMyw2LjNjMS4zLDAuMSw1LjMtMS4xLDcuMS0yLjNjMS44LTEuMi03LjUsMy43LTguNS00LjJjLTEtOC0xMi0xMC45LTE3LjYtMTAuNCBjLTUuNywwLjUtMTMsMC4yLTE1LjMtMC41Yy0yLjItMC43LTcuMS0xLjctNS4yLTUuOGMxLjktNC4yLDQuMS04LDYuNy04LjhjMi43LTAuOCwzLjQsMC4zLDkuNSwxLjJjNi4xLDAuOSwxMi0wLjYsMTMuNS0xLjIgYzEuNS0wLjYsMi44LTEuOCwyLjgtMS44czIsNC4zLDUuNCw0LjNjMy4zLDAsMTQuNC0zLjEsMTcuMS00LjJjMi42LTEuMSwyNS4xLTEyLjEsMzEuMi0yMS42YzAsMC0yNi4yLDIxLjItNDMuMiwxOS45IEMxNzcuMiw3Ni45LDE2Ni41LDc1LDE2Ni45LDY4Ljl6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xMjQuNCw4NWMwLDAtOC4xLDQuNS0xMS40LDE4LjNjMCwwLTAuNCw0LjksMS4yLDYuMWMxLjcsMS4yLDIuNSwxLjIsMi41LDEuMnMtMS42LDEtMS4yLDMuNiBjMC40LDIuNiw3LjEsMC41LDguMiwwLjNjMS0wLjIsMjEsMC40LDM1LjUsMy4zYzE0LjUsMi45LDE4LjksMC4zLDIwLjQtMWMxLjUtMS4zLDE0LjQtMTIuMywyMS40LTEyLjNsMy42LDBjMCwwLTMuNi0xLjgtNi4zLTEgYy0yLjcsMC44LTExLjgsNS42LTE0LjksNy4yYy0zLjEsMS42LTExLjEsNS40LTI1LDNjLTEzLjgtMi4zLTMzLjEtMi45LTM2LjMtMi4xYzAsMCwxLjYtMS41LDUtMi44YzAsMC03LjYsMC44LTguNC0yLjQgQzExNy45LDEwMy4yLDExNC40LDk5LjQsMTI0LjQsODV6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yNjcuNSwxMDYuMmMwLDAtMTEuNi03LTI0LjUtNS44Yy0xMi45LDEuMS0xOSwzLTE5LDNzMzIuNSwwLjQsMzYuOCwyLjNjNC4zLDEuOSw2LjMsMi45LDYuMywyLjkgTDI2Ny41LDEwNi4yeiI+PC9wYXRoPiA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMjcwLjUsMTIxLjdjLTAuNi0wLjQtMTQuNC01LjMtMjYuNi0zLjljLTEyLjIsMS40LTE3LjksMy0xOS4xLDMuN2MwLDAtMi4xLTMuMS0yLjMtNi4zIGMtMC4yLTMuMi0wLjktNy42LTMtOC45Yy0yLjEtMS4zLTQuMy0xLjktNi0yYy0xLjgtMC4xLTMuMywwLTMuMywwczUuOC0xLjIsNi41LTIuNWMwLjctMS4zLDUuNywyLjMsNi41LDMuNCBjMC44LDEuMSw0LjksNi42LDYuNCw3LjVjMS41LDEsMTEuNSwxLjgsMjAuNCwxLjhjOC45LDAsMjEuNyw1LjUsMjEuNyw1LjVMMjcwLjUsMTIxLjd6Ij48L3BhdGg+IDwvZz4gPGc+IDxnPiA8cGF0aCBjbGFzcz0ic3QyIiBkPSJNMTI5LjIsMjM1LjdjMCwwLDEuNCwxMS44LDMuNywxNS42YzIuNCwzLjgsMTIuMSwxOS4xLDEyLjEsMjFjMCwxLjktMC4xLDExLjctOC42LDkuMiBjLTguNS0yLjUtMTMuMS04LTE0LjUtMTAuNGMtMS40LTIuNC0zLTcuMi0zLTcuMnM0LjEsNS4yLDcuNSw0LjdjMy41LTAuNCw5LjMtMC40LDguMi02Yy0xLjItNS43LTIuOC05LjItMy43LTEyLjMgQzEzMCwyNDcuMiwxMjkuMiwyMzUuNywxMjkuMiwyMzUuN3oiPjwvcGF0aD4gPHBhdGggY2xhc3M9InN0MiIgZD0iTTEzMi42LDI4M2MwLDAtOC4yLDEuMS05LjctMC4xYy0xLjUtMS4yLTcuOC02LjctMTAuMy0xMC40Yy0yLjUtMy43LTEwLjYtMTQtMTMuOC0xNy40IGMtMy4yLTMuNC02LjgtNy41LTEwLjctMTEuNGMtMy45LTMuOS03LjktOS43LTguNS0xMi43Yy0wLjYtMy4xLDIuMy0xNy40LDMuNC0yMS4zYzEuMS00LDUuMS0xMC43LTEuMS0yMy42IGMtNi4yLTEzLTE2LjktMzEtMjMuNS0zNi45Yy02LjUtNS44LTguMy03LjktOC43LTEwLjRjLTAuNC0yLjQsOC4yLTE4LjgsOS40LTIwLjNjMS4yLTEuNSwxNi40LTE5LDMwLjgtMjIuOCBjMCwwLDcuOS00LjQsMTAuOCwzLjljMi45LDguNCwxMywyMS43LDE0LjUsMjQuNWMwLDAtMTQuNi0xNy0yMy4zLTE0LjZjLTguOCwyLjQtMTcuMyw3LjktMjAuNywxNi44Yy0zLjMsOC45LTcuNywxNS41LDAuNywyNy44IGM4LjQsMTIuMywxNC45LDMwLDE1LjYsMzNjMC42LDMuMSwzLjEsMTAuNiwxLjksMTguM2MtMS4zLDcuNy01LjcsMTkuMi01LDIzYzAuNywzLjgsMiw2LDUuMSw5LjdjMy4xLDMuNywyNC40LDI3LjgsMjUuOSwyOS45IEMxMTYuNywyNzAuMSwxMTksMjc1LjQsMTMyLjYsMjgzeiI+PC9wYXRoPiA8cGF0aCBjbGFzcz0ic3QyIiBkPSJNMTI2LjMsMjQ3LjRjMCwwLTIuMS0xMi4zLTMtMTQuMWMtMC45LTEuNy04LTEwLjEtMTIuNC0xMi41Yy00LjQtMi4zLTMtMS42LTguMS00LjhzLTctMy41LTguOS01LjcgYy0xLjktMi4zLTIuNi0zLjQtMi42LTMuNHMyLjcsOC4yLDYsMTAuNGMzLjMsMi4yLDguNiw0LjEsMTEuNCw3LjNjMi43LDMuMiw2LjIsOCw2LjcsOS4zQzExNS45LDIzNS4yLDEyNi4zLDI0Ny40LDEyNi4zLDI0Ny40eiAiPjwvcGF0aD4gPHBhdGggY2xhc3M9InN0MiIgZD0iTTEyMS44LDE2NGMwLDAtMi0wLjgtMy42LTJjLTEuNS0xLjItMS41LTEuMi0xLjUtMS4ycy0xMC45LDE4LjMtMjQuOSwyMi45YzAsMC0xLjItMC4xLTEuOC0xLjUgYy0wLjYtMS40LTEuMy0yLjYtMS42LTMuMmMtMC4yLTAuNiwxNC4xLDQuMSwxOC0xMS4xYzEtMy44LDguOS05LjIsOC45LTkuMmwtMi4zLTQuOWMwLDAtMjAsMTUuNy0yNiwxNi4zYzAsMC0xLjQsMC42LTIuNC0wLjUgYy0xLTEuMS05LjUtMTguOC05LjctMTkuN2MtMC4yLTAuOSw5LDEyLjYsMjIuNyw4YzEzLjgtNC43LDEzLjgtNy4yLDEzLjgtNy4ybC0xLjMtNi4xYzAsMCwyLjgsMC40LDMuNywyLjcgYzAuOCwyLjMsMS43LDMuMywxLjcsMy4zbDEuOC0xLjJsLTEuMS0yLjZsMS0wLjhsMS4zLDIuNWwyLjYtMS45YzAsMCwzLjYsMS40LDEuMiwzLjRjLTIuNCwyLTQuMywzLjQtNC4zLDMuNHM3LjQsNS45LDYuNC0xLjIgbDAuNC0zLjRjMCwwLDUuNiw5LjksMC45LDEzLjZsLTEsMS40YzAsMC0xLjYsMC41LTIuNSwwLjMiPjwvcGF0aD4gPHBhdGggY2xhc3M9InN0MiIgZD0iTTExNS43LDE0MmMwLDAtMi45LTcuOC0zLjUtOC40Yy0wLjUtMC42LDEsMS45LDAuMSwzLjVjLTAuOSwxLjYtMS4yLDIuMS0yLjYsMC44Yy0xLjQtMS4zLTMuOS0zLjYtNS41LTcuNSBjLTEuNi0zLjktMy42LTEwLjUtMy44LTEyLjhjLTAuMy0yLjMtMC4zLTMuMy0wLjMtMy4zcy0xLDYuNC0wLjYsOS4xYzAuNCwyLjcsMi43LDEwLjQsMi45LDExLjFjMC4yLDAuNiwxLjcsMywyLjIsMy45IGMwLjUsMC45LDIuOCwyLjYsMy42LDNjMC45LDAuNCw0LjEsMSw0LjEsMUwxMTUuNywxNDJ6Ij48L3BhdGg+IDwvZz4gPHBhdGggY2xhc3M9InN0MiIgZD0iTTY3LjIsMTY1LjRjMCwwLTIuNC0yLjItNC45LTUuM2MtMi41LTMuMS02LTcuOC03LjEtOS4xYy0xLjEtMS4zLTMuNS0zLjgtNS43LTUuN2MtMi4yLTEuOC0zLjUtMy0zLjgtMi43IGMtMC4zLDAuMy04LjIsMTQuMS0xNi4xLDE4LjZjLTcuOSw0LjUtMTEuMyw2LTEyLDYuMWMwLDAsNy43LDUuMiw5LjcsNC40YzItMC43LDE0LjctMTguOSwxNy40LTIyLjcgQzQ3LjUsMTQ1LjIsNTguMSwxNjEuNiw2Ny4yLDE2NS40eiI+PC9wYXRoPiA8cGF0aCBjbGFzcz0ic3QyIiBkPSJNNTEuNiwxNzguOGMwLDAtOC4xLDEyLTguNSwxNC4zYy0wLjUsMi4zLTAuMiwyLjktMC4yLDIuOXMtMTEuMi0xNC44LTEyLjQtMTYuMiBDMjkuMywxNzguNSwzOS42LDE5MS40LDUxLjYsMTc4Ljh6Ij48L3BhdGg+IDwvZz4gPGc+IDxwYXRoIGNsYXNzPSJzdDMiIGQ9Ik0xMjUuMiwyOTMuOGMwLDAtMTAuOSw0OC4zLDEzLjcsNzAuOWwyLjYsMS4xYzAsMCwyNC43LTguNCw0MC41LTEwLjNjMCwwLDEuNSwxLjQsMi40LTAuNyBjMC45LTIuMSwwLjktMTIuMSwwLjktMTIuMXMtOC44LDkuNC0yNCwxMS4yYy0xNS4yLDEuOC0xOS40LTAuOC0yMi4zLTQuNWMtMi44LTMuNy01LTcuMy02LjgtMTJjLTEuOC00LjctNS0xOS41LTUuOC0yNSBDMTI1LjcsMzA2LjksMTI1LjIsMjkzLjgsMTI1LjIsMjkzLjh6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDMiIGQ9Ik0xNDIuMywzNDUuNmMwLDAsMC43LDAuMSw0LjcsMC42YzQuMSwwLjUsOS4yLTMuNCwxMy40LTUuNmM0LjItMi4yLDE2LjctOC40LDI0LjItOC44IGM3LjUtMC40LDIwLjYsMS4yLDI1LjcsMy4xYzUuMSwxLjksMTMuOSw3LjYsMjAuMSw3YzYuMi0wLjcsMTcuNS03LDI1LjctOS4yYzguMi0yLjIsMTQuMy01LjMsMTcuMS02LjVjMi44LTEuMiwxNS4zLTUsMTcuOS03LjcgYzIuNi0yLjcsNC4xLTcuOCwzLjYtMTAuNGMtMC41LTIuNi02LjEtOS4xLTEwLTEyLjFjLTMuOS0yLjktMTQuNi01LjYtMTQuNi01LjZzMTMuMiw0LjgsMTQsMTIuNWMwLjgsNy43LTQsMTMuMS03LjYsMTQuOCBjLTMuNiwxLjctNy45LDQuOC0xMy4xLDYuM2MtNS4yLDEuNC0yNS43LDkuMi0zMS43LDkuNGMtNiwwLjItMTIuNi0wLjktMTUuMS0xLjdjLTIuNS0wLjgtMTQuMi0yLjEtMTguMy0yLjUgYy00LjEtMC41LTE0LjUtMC4yLTIwLjMsMS4zYy01LjgsMS41LTI3LDcuMy0yNy43LDcuNkMxNDkuOCwzMzguNCwxNDMuNSwzNDQuOCwxNDIuMywzNDUuNnoiPjwvcGF0aD4gPHBhdGggY2xhc3M9InN0MyIgZD0iTTE3MiwyODcuM2MwLDAsMjUuNywxOC4yLDQzLjIsMTljMTcuNCwwLjgsMTkuNi0xNC44LDI5LjYtMTUuMWMxMC0wLjQsOS45LTAuOCwxMi41LDAuMiBjMCwwLTQuNC0xMC4yLTI2LjUtNi41YzAsMC0zLjQsNy45LTkuNCw5LjljLTYsMi0xNS4yLDMuNi0yMS4xLDIuN0MxOTQuMywyOTYuNSwxNzQuNywyOTAuMSwxNzIsMjg3LjN6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDMiIGQ9Ik0xMjguNiwyOTQuMWMwLDAsOC40LDIsMTMuNSwxLjdjNS4xLTAuMywxMy01LjgsMTYuNi04LjljMy43LTMuMSwxMy4xLTE1LDE1LjktMTUuNSBjMi44LTAuNSwxOS44LDYuNCwyMC45LDguN2MxLjEsMi4zLTEwLTUuOC0yMi4xLDFjLTEyLjIsNi45LTEzLjYsMTIuNi0yMy43LDE1LjlDMTM5LjcsMzAwLjMsMTMxLjgsMjk2LjQsMTI4LjYsMjk0LjF6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDMiIGQ9Ik0yMDQuNywyODAuOWMwLDAtMC45LTAuMy0yLjMtMC40Yy0xLjMtMC4xLTMuOSw3LjMtMS41LDguNmMyLjQsMS4zLDIuOSwwLjEsMi45LDAuMUwyMDQuNywyODAuOXoiPjwvcGF0aD4gPHBhdGggY2xhc3M9InN0MyIgZD0iTTIwOS42LDI4OS4zYzAsMC0yLjUtNy4xLTAuMi03LjhjMi40LTAuNywzLjMtMC4xLDMuMy0wLjFsMC4yLDhDMjEyLjksMjg5LjQsMjA5LjUsMjkwLjksMjA5LjYsMjg5LjN6Ij48L3BhdGg+IDwvZz4gPHBhdGggZD0iTTE4OSwxNjMuMSI+PC9wYXRoPiA8Zz4gPGc+IDxnPiA8cGF0aCBkPSJNMTU3LjgsMTczLjdjMCwxLjMsMCwzLjYsMi41LDMuNmMwLjgsMCwxLjQtMC4zLDEuOC0wLjljMC41LTAuNywwLjYtMSwwLjYtNC4xaDYuNnYyLjNjMCw2LjMtNC43LDcuOS04LjksNy45IGMtNi43LDAtOS40LTMuNS05LjQtOS40di0xMi40YzAtMy43LDEuMy01LjcsMy4xLTdjMS43LTEuMiw0LjEtMS43LDYuMi0xLjdjMi43LDAsNS4zLDAuOSw3LjEsMi42YzEuNywxLjcsMiw0LjEsMiw1Ljh2OC40IGgtMTEuN1YxNzMuN3ogTTE1Ny44LDE2NC4xaDQuOXYtMy42YzAtMC44LDAtMi45LTIuMy0yLjljLTEuOCwwLTIuNSwxLjEtMi41LDIuOVYxNjQuMXoiPjwvcGF0aD4gPHBhdGggZD0iTTE3NCwxNDEuNmg2LjlWMTgySDE3NFYxNDEuNnoiPjwvcGF0aD4gPHBhdGggZD0iTTE4NS45LDE0MS42aDYuOHY2LjloLTYuOFYxNDEuNnogTTE4NS45LDE1Mi43aDYuOVYxODJoLTYuOVYxNTIuN3oiPjwvcGF0aD4gPHBhdGggZD0iTTE5OS4zLDE0Mi4xaDYuOHYxMC42aDQuMXY0LjVoLTQuMXYxNi43YzAsMS45LDAuMywzLjIsMy4xLDMuMmMwLjUsMCwwLjctMC4xLDEuMi0wLjF2NC45Yy0wLjUsMC4xLTEuMywwLjMtMy42LDAuMyBjLTYuNCwwLTcuNC0yLjQtNy40LTYuMXYtMTguOWgtMy43di00LjVoMy43VjE0Mi4xeiI+PC9wYXRoPiA8cGF0aCBkPSJNMjE5LjcsMTczLjdjMCwxLjMsMCwzLjYsMi41LDMuNmMwLjgsMCwxLjQtMC4zLDEuOC0wLjljMC41LTAuNywwLjYtMSwwLjYtNC4xaDYuNnYyLjNjMCw2LjMtNC43LDcuOS04LjksNy45IGMtNi43LDAtOS40LTMuNS05LjQtOS40di0xMi40YzAtMy43LDEuMy01LjcsMy4xLTdjMS43LTEuMiw0LjEtMS43LDYuMi0xLjdjMi43LDAsNS4zLDAuOSw3LjEsMi42YzEuNywxLjcsMiw0LjEsMiw1Ljh2OC40IGgtMTEuN1YxNzMuN3ogTTIxOS44LDE2NC4xaDQuOXYtMy42YzAtMC44LDAtMi45LTIuMy0yLjljLTEuOCwwLTIuNSwxLjEtMi41LDIuOVYxNjQuMXoiPjwvcGF0aD4gPC9nPiA8L2c+IDxnPiA8cGF0aCBjbGFzcz0ic3QyIiBkPSJNMTYwLjgsMjAzaDMuNHY1LjFoLTMuNHYyOC4xSDE1M3YtMjguMWgtMy40VjIwM2gzLjV2LTUuOWMwLTYuOSw1LjgtNi45LDguNy02LjljMSwwLDEuNywwLjEsMi43LDAuMXY2LjMgYy0wLjYsMC0xLjYtMC4xLTEuNy0wLjFjLTIsMC0yLDEuNi0yLDIuM1YyMDN6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDQiIGQ9Ik0xNzUuMiwyMjYuOGMwLDEuNCwwLDQuMSwyLjksNC4xYzAuOSwwLDEuNi0wLjQsMi4xLTFjMC42LTAuOCwwLjctMS4yLDAuNy00LjZoNy41djIuN2MwLDcuMi01LjMsOS0xMC4xLDkgYy03LjYsMC0xMC43LTQtMTAuNy0xMC43di0xNGMwLTQuMiwxLjQtNi41LDMuNi04YzItMS40LDQuNy0yLDctMmMzLjEsMCw2LDEsOC4xLDIuOWMxLjksMiwyLjMsNC43LDIuMyw2LjZ2OS41aC0xMy4zVjIyNi44eiBNMTc1LjMsMjE1LjloNS41di00LjFjMC0wLjksMC0zLjMtMi43LTMuM2MtMiwwLTIuOSwxLjItMi45LDMuM1YyMTUuOXoiPjwvcGF0aD4gPHBhdGggY2xhc3M9InN0MyIgZD0iTTIwMSwyMjYuOGMwLDEuNCwwLDQuMSwyLjksNC4xYzAuOSwwLDEuNi0wLjQsMi4xLTFjMC42LTAuOCwwLjctMS4yLDAuNy00LjZoNy41djIuN2MwLDcuMi01LjMsOS0xMC4xLDkgYy03LjYsMC0xMC43LTQtMTAuNy0xMC43di0xNGMwLTQuMiwxLjQtNi41LDMuNi04YzEuOS0xLjQsNC43LTIsNy0yYzMuMSwwLDYsMSw4LjEsMi45YzEuOSwyLDIuMyw0LjcsMi4zLDYuNnY5LjVIMjAxVjIyNi44eiBNMjAxLDIxNS45aDUuNXYtNC4xYzAtMC45LDAtMy4zLTIuNy0zLjNjLTIsMC0yLjksMS4yLTIuOSwzLjNWMjE1Ljl6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yMjEuMiwxOTFoNy43djEyaDQuNnY1LjFoLTQuN3YxOWMwLDIuMSwwLjQsMy42LDMuNSwzLjZjMC41LDAsMC44LTAuMSwxLjQtMC4xdjUuNSBjLTAuNSwwLjEtMS41LDAuNC00LjEsMC40Yy03LjMsMC04LjQtMi43LTguNC03di0yMS41SDIxN1YyMDNoNC4yVjE5MXoiPjwvcGF0aD4gPC9nPiA8L2c+IDxnPiA8cGF0aCBkPSJNMjU3LjQsMTkyYzAsMzYuMS0yOS4zLDY1LjQtNjUuNCw2NS40Yy0zNi4xLDAtNjUuNC0yOS4zLTY1LjQtNjUuNGMwLTM2LjEsMjkuMy02NS40LDY1LjQtNjUuNCBDMjI4LjEsMTI2LjYsMjU3LjQsMTU2LDI1Ny40LDE5MnogTTE5MiwxMjIuNmMtMzguMywwLTY5LjQsMzEuMS02OS40LDY5LjRjMCwzOC4zLDMxLjEsNjkuNCw2OS40LDY5LjQgYzM4LjMsMCw2OS40LTMxLjEsNjkuNC02OS40QzI2MS40LDE1My44LDIzMC4zLDEyMi42LDE5MiwxMjIuNnoiPjwvcGF0aD4gPC9nPiA8Zz4gPGc+IDxwYXRoIGNsYXNzPSJzdDQiIGQ9Ik0zMzEuMiwxMzMuMmMwLDAtMjUuMiwxNi4yLTMzLjYsMzFjLTguNCwxNC43LTEzLDI2LjUtMTYuNCwzOC4yYy0zLjQsMTEuNy04LDIyLjgtOC4xLDI5IGMtMC4xLDYuMiwyLjIsMTUsNC42LDE4LjhjMi40LDMuOCwxMS4xLDMwLjcsMTQuMiwzMmMzLjEsMS4zLDEyLjQsMC45LDE2LjEsMWMzLjcsMC4xLDguMSwxLjQsMTAuNi0yLjkgYzIuNi00LjMsMy4zLTkuMywyLjEtMTEuOGMtMS4yLTIuNS0xMS04LjMtMTIuOC0xMC45Yy0xLjgtMi41LDYuNiwxMC4xLDYuNSwxNS4xYy0wLjEsNS0yLDcuNC01LjgsNy4zIGMtMy43LTAuMS0xNi44LTEuNi0xNi44LTEuNnMtMTQuOC0zNC41LTE0LjEtMzguOWMwLjctNC4zLDcuMy00NC44LDE3LjYtNjQuM2MwLjYtMS4yLDQuMi0xNC42LDExLjYtMTkgYzUuNC0zLjIsMTYuOS0xNS4yLDIyLjItMTcuNWM5LjgtNC40LDIwLjksMTMuMiwyMy4zLDEzLjZjMCwwLTEyLjctMTguMy0xNS43LTIwLjNDMzMzLjgsMTMwLjIsMzMxLjIsMTMzLjIsMzMxLjIsMTMzLjJ6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDQiIGQ9Ik0zNTUsMTU0LjljMCwwLDEuNyw1LjYtMi4xLDkuM2MtMy44LDMuNi0xNC42LDEzLjQtMjAuMywxOC4yYy01LjcsNC44LTEzLjMsMTEuNS0xNC43LDE3LjEgYy0xLjQsNS42LTEuOCwyMy42LTAuNiwyOC42YzEuMSw1LDIuMSwxOC43LDIuNiwyMy4xYzAuNSw0LjQsMS4xLDguMSwxLjEsOC4xcy05LjktMi43LTE0LjctMTAuM2MtNC44LTcuNi01LjMtMTIuNi00LjYtMTcuNSBjMC43LTUsMS41LTExLjIsMi4yLTE0LjNjMC43LTMuMSwwLjktMTQuMyw0LjgtMTguNWMzLjgtNC4zLDE4LjYtMjQuNSwyMC41LTI1LjdjMS45LTEuMiwxMC44LTkuMSwxMC44LTkuMWw5LjUtNi42IGMwLDAtMjAuNCwyMS4zLTI1LjUsMjYuOGMtNS4xLDUuNS0xMy40LDE0LjYtMTQuOCwyMi4xYy0xLjQsNy40LTYuOCwyNi42LTQuNCwzMi4yYzIuNCw1LjcsMTAuOSwxMy4zLDEwLjksMTMuMyBzLTIuMS0xNy41LTItMjEuMmMwLjEtMy43LDAuNC0xOS4zLDAuNS0yMS4xYzAtMS45LDIuMi0xNi4xLDYuNi0xOC41YzQuNC0yLjQsMjIuOS0yMS4zLDI2LTI0LjMgQzM0OS44LDE2My41LDM1NSwxNTQuOSwzNTUsMTU0Ljl6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDQiIGQ9Ik0zMDMuNCwxNTUuNmMwLDAtMS44LDEuMy0yLDAuMWMtMC40LTMuNC05LjgtMS44LTE0LjktNC43Yy02LjgtMy45LTcuOC05LjItNy44LTkuMnMtNS4zLDE3LjUtNC44LDIwLjYgYzAuNiwzLjEsMTMuNSw3LjgsMTcuMyw2YzMuOC0xLjgsNC41LTQuOSw0LjUtNC45cy04LjgsMi4zLTEzLjctMC4zYy00LjktMi42LTUuMi02LjcsMC40LTcuOCBDMjg4LjEsMTU0LjMsMzAzLjQsMTU1LjYsMzAzLjQsMTU1LjZ6Ij48L3BhdGg+IDxwYXRoIGNsYXNzPSJzdDQiIGQ9Ik0zMzcuMSwxMTUuMmMwLDAtMS41LTAuNi0xLjQtNi4xYzAuMS01LjUtMC4yLTYuMS0wLjEtN2MwLTAuOSwwLTEuNSwwLjctMy45YzAuNy0yLjQsMC4xLTMtNS4xLTIuNSBjLTUuMiwwLjUtMjEuOSwzLjItMjUuOSw0LjNjLTQsMS4xLTE0LjEsNC41LTE2LjUsNC41Yy0yLjQtMC4xLTMuNi0xLjktNCwxLjFjLTAuNCwzLTMsMTAuOS0zLDEyLjFjMCwxLjIsMC42LDEuOCwyLjEtMC42IGMxLjYtMi40LDIuNi02LDMuOC02LjljMS4yLTAuOS0yLjctMC4xLDcuNy0zLjJjMTAuNC0zLjEsMTIuNS0zLjcsMTguOS01YzYuNC0xLjQsMTEuOS0yLjgsMTQuNi0zIEMzMzEuNyw5OC43LDMzNy4xLDExNS4yLDMzNy4xLDExNS4yeiI+PC9wYXRoPiA8cGF0aCBjbGFzcz0ic3Q0IiBkPSJNMzI4LjksMTE1Yy0xLjgsMC4zLTI5LjUsNC4yLTMxLjQsNC41Yy0xLjgsMC4zLTUuOCwxLjQtOS43LDEuNmMtNCwwLjItNi4zLTEuNy02LjcsMS43IGMtMC40LDMuMy0wLjgsMTAtMC45LDEyLjdjLTAuMSwyLjcsMy4zLDMuNyw0LjIsMy4xYzAuOS0wLjYsMy43LTEuNCw0LjktMmMxLjItMC42LTMuNywxLjUtNS4xLTEuOWMtMi45LTcsMC44LTguOCwwLjgtOC44IEMyODgsMTIzLjgsMzI4LjksMTE1LDMyOC45LDExNXoiPjwvcGF0aD4gPC9nPiA8cGF0aCBjbGFzcz0ic3Q0IiBkPSJNMjcyLjksMTY0LjVjMCwwLTE0LjEsMjUuNy0zLjEsNTguNGwxLjIsMy40bDIuNS04LjhDMjczLjQsMjE3LjYsMjYzLjcsMTg4LjQsMjcyLjksMTY0LjV6Ij48L3BhdGg+IDwvZz4gPGc+IDxwYXRoIGQ9Ik0yNTAsMTM2LjVjMC00LjUsMy42LTguMiw4LjItOC4yYzQuNiwwLDguMiwzLjYsOC4yLDguMmMwLDQuNS0zLjYsOC4yLTguMiw4LjJDMjUzLjYsMTQ0LjYsMjUwLDE0MSwyNTAsMTM2LjV6IE0yNTEuMywxMzYuNWMwLDMuOCwzLjEsNi44LDYuOSw2LjhjMy43LDAsNi45LTMsNi45LTYuOGMwLTMuOS0zLjEtNi44LTYuOS02LjhDMjU0LjUsMTI5LjYsMjUxLjMsMTMyLjYsMjUxLjMsMTM2LjV6IE0yNjEuOSwxNDEuMWgtMS41bC0yLjMtNC4yaC0xLjd2NC4ySDI1NXYtOS4yaDMuOWMxLjcsMCwzLjIsMC41LDMuMiwyLjRjMCwxLjgtMS4yLDIuNS0yLjUsMi41TDI2MS45LDE0MS4xeiBNMjU2LjQsMTMzLjN2Mi4zIGgxLjRjMS4yLDAsMi45LDAuMiwyLjktMWMwLTEuMi0xLTEuMi0yLjEtMS4ySDI1Ni40eiI+PC9wYXRoPiA8L2c+IDwvZz4gPGVsbGlwc2UgdHJhbnNmb3JtPSJtYXRyaXgoMC43MDcxIC0wLjcwNzEgMC43MDcxIDAuNzA3MSAtNzkuNTM3NCAxOTIuMDIpIiBjbGFzcz0ic3Q1IiBjeD0iMTkyIiBjeT0iMTkyIiByeD0iMTg5LjUiIHJ5PSIxODkuNSI+PC9lbGxpcHNlPiA8L3N2Zz4g";
+
+const WEEKLY = [
+  {id:"w1", dow:3, s:"16:30", e:"17:30", t:"Preparatory Tap/Jazz", k:"class",   mine:true},
+  {id:"w2", dow:3, s:"17:30", e:"18:45", t:"Level 7 Tap",          k:"class",   mine:true, with:"Karen"},
+  {id:"w3", dow:3, s:"18:45", e:"20:00", t:"Office",               k:"office",  mine:true},
+  {id:"w4", dow:3, s:"20:00", e:"21:00", t:"Level 4 Tap",          k:"class",   mine:true},
+  {id:"w5", dow:4, s:"16:45", e:"17:45", t:"Jazz Level 1/2",       k:"class",   mine:true},
+  {id:"w6", dow:4, s:"17:45", e:"18:45", t:"Acro Level 3",         k:"class",   mine:true, with:"Kerry"},
+  {id:"w7", dow:4, s:"18:45", e:"19:45", t:"Teen 1 Tap/Jazz",      k:"class",   mine:true},
+  {id:"w8", dow:4, s:"19:45", e:"20:45", t:"Teen 2 Tap/Jazz",      k:"class",   mine:true},
+  {id:"w10",dow:4, s:"21:00", e:"21:30", t:"Mack The Knife",       k:"company", mine:true},
+  {id:"w11",dow:5, s:"16:45", e:"17:45", t:"Acro Level 1",         k:"class",   mine:true, with:"Hannah"},
+  {id:"x1", dow:1, s:"18:00", e:"18:30", t:"Large Group Hip Hop",  k:"company", mine:false, by:"Jonathan"},
+  {id:"x2", dow:1, s:"19:30", e:"20:00", t:"Shark Week",           k:"company", mine:false, by:"Jonathan"},
+  {id:"x3", dow:3, s:"17:30", e:"18:00", t:"Hip Hop Wednesday",    k:"company", mine:false, by:"Jasmyn & Katie"}
+];
+
+const ROTATIONS = [
+  {id:"c1", name:"Company 1", dow:5, nth:[2,4], blocks:[
+    {id:"c1a", s:"16:30", e:"17:15", t:"Little Cupids",           mine:false, by:"Amanda"},
+    {id:"c1b", s:"17:15", e:"18:00", t:"In My Own Little Corner", mine:false, by:"Jenn"},
+    {id:"c1c", s:"18:00", e:"18:45", t:"Splish Splash",           mine:true},
+    {id:"c1d", s:"18:45", e:"19:30", t:"Friends Are Family",      mine:true, with:"Whitney"},
+    {id:"c1e", s:"19:30", e:"20:15", t:"The Girl I Mean To Be",   mine:false, by:"Whitney"}
+  ]},
+  {id:"c2", name:"Company 2", dow:5, nth:[1,3,5], blocks:[
+    {id:"c2a", s:"16:30", e:"17:15", t:"Mr. Worldwide",        mine:false, by:"Jenn"},
+    {id:"c2b", s:"17:15", e:"18:00", t:"Be A Light",           mine:false, by:"Jenn"},
+    {id:"c2c", s:"18:00", e:"18:45", t:"Small Group Tap",      mine:true},
+    {id:"c2d", s:"18:45", e:"19:30", t:"I Wish",               mine:true},
+    {id:"c2e", s:"18:45", e:"19:30", t:"Jump Shout Boogie",    mine:false, by:"Karen"},
+    {id:"c2f", s:"19:30", e:"20:15", t:"Maypole Dance",        mine:false, by:"Amanda"},
+    {id:"c2g", s:"19:30", e:"20:15", t:"Angel Eyes",           mine:false, by:"Whitney"},
+    {id:"c2h", s:"20:15", e:"21:00", t:"Cover Me in Sunshine", mine:false, by:"Whitney"}
+  ]},
+  {id:"c3", name:"Company 3", dow:6, nth:[1,3,5], blocks:[
+    {id:"c3a", s:"08:00", e:"09:30", t:"Let's Go to the Movies", mine:true},
+    {id:"c3b", s:"09:30", e:"10:30", t:"Front Porch",            mine:false, by:"Jenn"},
+    {id:"c3c", s:"10:30", e:"11:30", t:"A Christmas Medley",     mine:true,  with:"Karen & Gay Lynn"},
+    {id:"c3d", s:"11:30", e:"12:30", t:"At the Copa",            mine:false, by:"Amanda & Jenn"},
+    {id:"c3e", s:"11:30", e:"12:30", t:"I Got Rhythm",           mine:false, by:"Karen & Gay Lynn"},
+    {id:"c3f", s:"12:30", e:"13:30", t:"The Chain",              mine:false, by:"Charlotte"},
+    {id:"c3g", s:"12:30", e:"13:30", t:"Dancin' Fool",           mine:false, by:"Karen & Gay Lynn"},
+    {id:"c3h", s:"13:30", e:"14:30", t:"All Shook Up",           mine:false, by:"Charlotte"},
+    {id:"c3i", s:"13:30", e:"14:30", t:"One Less Bell",          mine:false, by:"Whitney"},
+    {id:"c3j", s:"14:30", e:"15:30", t:"Money",                  mine:false, by:"Amanda"},
+    {id:"c3k", s:"14:30", e:"15:30", t:"I've Got the World on A String", mine:false, by:"Whitney"},
+    {id:"c3l", s:"15:30", e:"16:30", t:"Autumn",                 mine:false, by:"Amanda"},
+    {id:"c3m", s:"15:30", e:"16:30", t:"Oklahoma Medley",        mine:false, by:"Jenn & Whitney"},
+    {id:"c3n", s:"16:30", e:"17:30", t:"Dear Me",                mine:false, by:"Whitney"},
+    {id:"c3o", s:"16:30", e:"17:30", t:"A Tree of Life",         mine:false, by:"Jenn"}
+  ]}
+];
+
+/* Pre-season camp: [date, start, end, number, faculty, studio] — dated one-offs. */
+const PRESEASON = [
+["2026-08-24","16:30","17:30","Boogie Woogie Christmas","Karen/Mark/Gay Lynn","Studio 3"],
+["2026-08-24","17:30","18:30","Friends Are Family","Whitney/Mark","Studio 3"],
+["2026-08-24","17:30","18:30","I Got Rhythm","Karen/Gay Lynn","Studio 2"],
+["2026-08-24","18:30","19:30","Company 1 Team Building","Whitney","Studio 3"],
+["2026-08-24","18:30","19:30","Good Morning","Mark","Studio 2"],
+["2026-08-24","19:30","20:30","Little Cupids","Amanda","Studio 3"],
+["2026-08-24","19:30","20:30","Cover Me In Sunshine","Whitney","Studio 2"],
+["2026-08-25","16:30","17:30","Young Ruler$","Jonathan","Studio 3"],
+["2026-08-25","17:30","18:30","Shark Week","Jonathan","Studio 3"],
+["2026-08-25","17:30","18:30","One Less Bell","Whitney","Studio 2"],
+["2026-08-25","18:30","19:30","Company 3 Team Building","Whitney","Studio 3"],
+["2026-08-25","19:30","21:00","Money","Amanda","Studio 3"],
+["2026-08-25","19:30","20:30","I've Got the World on A String","Whitney","Studio 2"],
+["2026-08-26","16:30","17:30","In My Own Little Corner","Jenn","Studio 3"],
+["2026-08-26","16:30","17:30","I Wish","Mark","Studio 2"],
+["2026-08-26","17:30","18:30","Be A Light","Jenn","Studio 3"],
+["2026-08-26","17:30","18:30","Splish Splash","Mark","Studio 2"],
+["2026-08-26","18:30","19:30","Front Porch","Jenn/Amanda","Studio 3"],
+["2026-08-26","18:30","19:30","Jet Set","Mark","Studio 2"],
+["2026-08-26","19:30","20:30","Autumn","Amanda","Studio 3"],
+["2026-08-27","16:30","17:30","At the Copa","Jenn/Amanda","Studio 3"],
+["2026-08-27","17:30","18:30","Mr. Worldwide","Jenn","Studio 3"],
+["2026-08-27","18:30","19:30","A Tree of Life","Jenn","Studio 3"],
+["2026-08-27","18:30","19:30","Jump Shout Boogie","Karen","Studio 2"],
+["2026-08-27","19:30","20:30","Dancin' Fool","Karen/Gay Lynn","Studio 3"],
+["2026-08-28","16:30","17:30","Be A Light","Jenn","Studio 3"],
+["2026-08-28","17:30","18:30","Mr. Worldwide","Jenn","Studio 3"],
+["2026-08-28","17:30","18:30","I Wish","Mark","Studio 2"],
+["2026-08-28","18:30","19:30","Jump Shout Boogie","Karen","Studio 3"],
+["2026-08-28","18:30","19:30","Good Morning","Mark","Studio 2"],
+["2026-08-28","19:30","20:30","Angel Eyes","Whitney","Studio 3"],
+["2026-08-28","19:30","20:30","Maypole Dance","Amanda","Studio 2"],
+["2026-08-29","09:00","10:00","Let's Go to the Movies","Mark","Studio 3"],
+["2026-08-29","10:00","11:00","Let's Go to the Movies","Mark","Studio 3"],
+["2026-08-29","11:00","12:00","Let's Go to the Movies","Mark","Studio 3"],
+["2026-08-29","12:00","13:00","Money","Amanda","Studio 3"],
+["2026-08-29","12:00","13:00","I've Got the World on A String","Whitney","Studio 2"],
+["2026-08-29","13:00","14:00","Oklahoma Medley","Jenn/Whitney","Studio 3"],
+["2026-08-29","14:00","15:00","Dear Me","Whitney","Studio 3"],
+["2026-08-31","16:30","17:30","Splish Splash","Mark","Studio 3"],
+["2026-08-31","16:30","17:30","Dancin' Fool","Karen/Gay Lynn","Studio 2"],
+["2026-08-31","17:30","18:30","Good Burger","Jasmyn/Katie","Studio 3"],
+["2026-08-31","17:30","18:30","Boogie Woogie Christmas","Karen/Mark/Gay Lynn","Studio 2"],
+["2026-08-31","18:30","19:30","Company 2 Team Building","Whitney","Studio 3"],
+["2026-08-31","18:30","19:30","I Got Rhythm","Karen/Gay Lynn","Studio 2"],
+["2026-08-31","18:30","19:30","Jet Set","Mark","Studio 1"],
+["2026-08-31","19:30","20:30","Angel Eyes","Whitney","Studio 3"],
+["2026-08-31","19:30","20:30","Maypole Dance","Amanda","Studio 2"],
+["2026-09-01","16:30","18:00","Shark Week","Jonathan","Studio 3"],
+["2026-09-01","18:00","19:00","Let's Go to the Movies","Mark","Studio 3"],
+["2026-09-01","19:00","20:00","Let's Go to the Movies","Mark","Studio 3"],
+["2026-09-01","20:00","21:00","Let's Go to the Movies","Mark","Studio 3"],
+["2026-09-02","16:30","17:30","At the Copa","Jenn/Amanda","Studio 3"],
+["2026-09-02","17:30","18:30","One Less Bell","Whitney","Studio 3"],
+["2026-09-02","17:30","18:30","Good Burger","Jasmyn/Katie","Studio 2"],
+["2026-09-02","18:30","19:30","Dear Me","Whitney","Studio 3"],
+["2026-09-02","18:30","19:30","A Tree of Life","Jenn","Studio 2"],
+["2026-09-02","19:30","20:30","Oklahoma Medley","Jenn/Whitney","Studio 3"],
+["2026-09-02","19:30","20:30","Autumn","Amanda","Studio 2"],
+["2026-09-03","17:00","18:00","In My Own Little Corner","Jenn","Studio 3"],
+["2026-09-03","17:00","18:00","Little Cupids","Amanda","Studio 2"],
+["2026-09-03","18:00","19:00","Front Porch","Jenn/Amanda","Studio 3"],
+["2026-09-03","18:00","19:00","The Girl I Mean To Be","Whitney","Studio 2"],
+["2026-09-03","19:00","20:00","Friends Are Family","Whitney/Mark","Studio 3"],
+["2026-09-03","19:00","20:00","The Chain","Charlotte","Studio 2"],
+["2026-09-03","20:00","21:00","All Shook Up","Charlotte","Studio 3"],
+["2026-09-03","20:00","21:00","Cover Me in Sunshine","Whitney","Studio 2"],
+["2026-09-08","17:00","18:00","Shark Week","Jonathan","Studio 3"],
+["2026-09-08","17:00","18:00","Good Morning","Mark","Studio 2"],
+["2026-09-08","18:00","19:00","Young Ruler$","Jonathan","Studio 3"],
+["2026-09-08","18:00","19:00","I Wish","Mark","Studio 2"],
+["2026-09-08","19:00","20:00","One Less Bell","Whitney","Studio 3"],
+["2026-09-08","19:00","20:00","Mr. Worldwide","Jenn","Studio 2"],
+["2026-09-08","19:00","20:00","Jet Set","Mark","Studio 1"],
+["2026-09-08","20:00","21:00","A Tree of Life","Jenn","Studio 3"],
+["2026-09-08","20:00","21:00","Angel Eyes","Whitney","Studio 2"],
+["2026-09-08","20:00","21:00","Maypole Dance","Amanda","Studio 1"],
+["2026-09-09","16:30","18:00","Young Ruler$","Jonathan","Studio 3"],
+["2026-09-09","16:30","18:00","Be A Light","Jenn","Studio 2"],
+["2026-09-09","16:30","18:00","Dancin' Fool","Karen/Gay Lynn","Studio 1"],
+["2026-09-09","18:00","19:00","Front Porch","Jenn/Amanda","Studio 3"],
+["2026-09-09","18:00","19:00","Jump Shout Boogie","Karen","Studio 2"],
+["2026-09-09","18:00","19:00","Cover Me in Sunshine","Whitney","Studio 1"],
+["2026-09-09","19:00","20:00","Let's Go to the Movies","Mark","Studio 3"],
+["2026-09-09","19:00","20:00","Hip Hop Wednesday","Jasmyn/Katie","Studio 2"],
+["2026-09-09","20:00","21:00","Let's Go to the Movies","Mark","Studio 3"],
+["2026-09-10","16:30","17:30","Boogie Woogie Christmas","Karen/Mark/Gay Lynn","Studio 3"],
+["2026-09-10","16:30","17:30","Little Cupids","Amanda","Studio 2"],
+["2026-09-10","17:30","18:30","At the Copa","Jenn/Amanda","Studio 3"],
+["2026-09-10","17:30","18:30","I Got Rhythm","Karen/Gay Lynn","Studio 2"],
+["2026-09-10","17:30","18:30","The Girl I Mean to Be","Whitney","Studio 1"],
+["2026-09-10","18:30","19:30","Money","Amanda","Studio 3"],
+["2026-09-10","18:30","19:30","I've Got the World on A String","Whitney","Studio 2"],
+["2026-09-10","19:30","21:00","Autumn","Amanda","Studio 3"],
+["2026-09-10","19:30","21:00","Oklahoma Medley","Jenn/Whitney","Studio 2"],
+["2026-09-11","16:30","17:30","In My Own Little Corner","Jenn","Studio 3"],
+["2026-09-11","17:30","18:30","Splish Splash","Mark","Studio 3"],
+["2026-09-11","18:30","19:30","Friends Are Family","Whitney/Mark","Studio 3"],
+["2026-09-11","19:30","20:30","The Girl I Mean to Be","Whitney","Studio 3"],
+["2026-09-12","09:00","10:00","Let's Go to the Movies","Mark","Studio 3"],
+["2026-09-12","10:00","11:00","Let's Go to the Movies","Mark","Studio 3"],
+["2026-09-12","11:00","12:00","Dear Me","Whitney","Studio 3"],
+["2026-09-12","11:00","12:00","The Chain","Charlotte","Studio 2"],
+["2026-09-12","12:00","13:00","The Chain","Charlotte","Studio 3"],
+["2026-09-12","13:00","14:00","All Shook Up","Charlotte","Studio 3"],
+["2026-09-12","14:00","15:00","All Shook Up","Charlotte","Studio 3"]
+];
+
+const PRE_BY_DATE = {};
+PRESEASON.forEach(function(r,i){ (PRE_BY_DATE[r[0]] = PRE_BY_DATE[r[0]] || []).push({
+  id:"ps"+i, s:r[1], e:r[2], t:r[3], by:r[4], room:r[5], mine:/\bMark\b/.test(r[4])
+}); });
+
+const COMPETITIONS = [
+  {id:"cmp-rev",  name:"Revolution",        venue:"Gordon Center, Owings Mills MD", from:"2027-03-12", to:"2027-03-14"},
+  {id:"cmp-img",  name:"Imagine",           venue:"Jim Rouse, Columbia MD",         from:"2027-04-23", to:"2027-04-25"},
+  {id:"cmp-nex",  name:"NexStar",           venue:"Gordon Center, Owings Mills MD", from:"2027-05-14", to:"2027-05-16"},
+  {id:"cmp-natl", name:"Imagine Nationals", venue:"Ocean City, MD",                 from:"2027-07-04", to:"2027-07-08"}
+];
+
+/* Standing private lessons. Names are deliberately left out — this copy is for sharing. */
+const PRIVATES = [
+  {start:"07:15", minutes:45, dow:6, nths:[1,3,5], from:"2026-09-14", until:"2027-06-26"},
+  {start:"11:00", minutes:60, dow:0, nths:[1,3,5], from:"2026-09-14", until:"2027-06-26"}
+];
+
+const SEASON = {
+  scheduleStart:"2026-08-24",   /* first day of pre-season camp */
+  classesStart:"2026-09-14",    /* weekly classes begin */
+  classesEnd:"2027-06-26",      /* weekly classes stop */
+  scheduleEnd:"2027-07-08"      /* last day of the last competition */
+};
+
+const KIND = {
+  class:   {label:"Class",      v:"--c-class",   s:"--c-class-soft"},
+  company: {label:"Company",    v:"--c-company", s:"--c-company-soft"},
+  camp:    {label:"Pre-season", v:"--c-camp",    s:"--c-camp-soft"},
+  private: {label:"Private",    v:"--c-private", s:"--c-private-soft"},
+  comp:    {label:"Competition",v:"--c-comp",    s:"--c-comp-soft"},
+  other:   {label:"Other staff",v:"--c-other",   s:"--c-other-soft"}
+};
+
+let VIEW="week", CURSOR=null, SHOW_OTHERS=false;
+
+/* ---------- dates ---------- */
+const DOW_LONG=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const DOW_SHORT=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const MON_LONG=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const MON_SHORT=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+function ymd(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function fromYmd(s){ const p=String(s).split("-").map(Number); return new Date(p[0],p[1]-1,p[2]); }
+function addDays(d,n){ const x=new Date(d.getFullYear(),d.getMonth(),d.getDate()); x.setDate(x.getDate()+n); return x; }
+function mondayOf(d){ return addDays(d,-((d.getDay()+6)%7)); }
+function daysBetween(a,b){ return Math.round((b-a)/86400000); }
+function nthOfMonth(d){ return Math.floor((d.getDate()-1)/7)+1; }
+function today(){ const n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
+function sameDay(a,b){ return ymd(a)===ymd(b); }
+function mins(t){ const p=t.split(":").map(Number); return p[0]*60+p[1]; }
+function fmtTime(t){ const p=t.split(":").map(Number),h=p[0],m=p[1];
+  return (h%12===0?12:h%12)+(m?":"+String(m).padStart(2,"0"):"")+(h>=12?"pm":"am"); }
+function fmtRange(s,e){ const a=fmtTime(s),b=fmtTime(e);
+  return (a.slice(-2)===b.slice(-2)?a.slice(0,-2):a)+"–"+b; }
+function fmtDate(d){ return MON_SHORT[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear(); }
+function fmtShort(d){ return MON_SHORT[d.getMonth()]+" "+d.getDate(); }
+function endFrom(start,minutes){ const t=mins(start)+Number(minutes);
+  return String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0"); }
+
+function inSchedule(d){ return d>=fromYmd(SEASON.scheduleStart) && d<=fromYmd(SEASON.scheduleEnd); }
+function inClasses(d){ return d>=fromYmd(SEASON.classesStart) && d<=fromYmd(SEASON.classesEnd); }
+
+/* ---------- what is on ---------- */
+function mk(date,s,e,title,kind,mine,wth,by,group,room){
+  return {date:date,s:s,e:e,title:title,kind:kind,mine:!!mine,
+          with:wth||null,by:by||null,group:group||null,room:room||null,allDay:false};
+}
+function eventsOn(d){
+  const key=ymd(d), out=[];
+  if(!inSchedule(d)) return out;
+  const dow=d.getDay(), nth=nthOfMonth(d);
+
+  (PRE_BY_DATE[key]||[]).forEach(function(b){
+    out.push(mk(key,b.s,b.e,b.t,"camp",b.mine,null,b.by||null,"Pre-season camp",b.room));
+  });
+
+  if(inClasses(d)){
+    WEEKLY.forEach(function(w){
+      if(w.dow!==dow) return;
+      if(w.k==="office") return;                       /* admin time is not a class */
+      out.push(mk(key,w.s,w.e,w.t,w.k,w.mine,w.with,w.by,null,null));
+    });
+    ROTATIONS.forEach(function(r){
+      if(r.dow!==dow || r.nth.indexOf(nth)<0) return;
+      r.blocks.forEach(function(b){
+        out.push(mk(key,b.s,b.e,b.t,"company",b.mine,b.with,b.by,r.name,null));
+      });
+    });
+  }
+
+  PRIVATES.forEach(function(p){
+    const from=fromYmd(p.from), until=fromYmd(p.until);
+    if(Number(p.dow)!==dow || d<from || d>until) return;
+    if(p.nths && p.nths.length && p.nths.indexOf(nth)<0) return;
+    out.push(mk(key,p.start,endFrom(p.start,p.minutes),"Private lesson","private",true,null,null,null,null));
+  });
+
+  COMPETITIONS.forEach(function(cp){
+    const a=fromYmd(cp.from), b=fromYmd(cp.to);
+    if(d<a || d>b) return;
+    const ev=mk(key,"00:00","00:00",cp.name,"comp",true,null,null,null,cp.venue);
+    ev.allDay=true; ev.dayNo=daysBetween(a,d)+1; ev.dayCount=daysBetween(a,b)+1;
+    out.push(ev);
+  });
+
+  out.sort(function(a,b){ return mins(a.s)-mins(b.s) || a.title.localeCompare(b.title); });
+  return out;
+}
+function shown(d){
+  return eventsOn(d).filter(function(e){ return SHOW_OTHERS || e.mine; });
+}
+function compOn(d){
+  return eventsOn(d).filter(function(e){ return e.kind==="comp"; })[0] || null;
+}
+
+/* ---------- dom ---------- */
+function h(tag,attrs,kids){
+  const el=document.createElement(tag);
+  if(attrs) Object.keys(attrs).forEach(function(k){
+    const v=attrs[k]; if(v===null||v===undefined||v===false) return;
+    if(k==="class") el.className=v;
+    else if(k==="text") el.textContent=v;
+    else if(k==="html") el.innerHTML=v;
+    else if(k==="style") el.setAttribute("style",v);
+    else if(k.slice(0,2)==="on") el.addEventListener(k.slice(2),v);
+    else el.setAttribute(k, v===true?"":v);
+  });
+  (kids||[]).forEach(function(c){ if(c) el.appendChild(c); });
+  return el;
+}
+function kstyle(k){ const x=KIND[k]||KIND.other; return "--k:var("+x.v+");--k-soft:var("+x.s+")"; }
+
+const root=document.getElementById("app");
+
+function render(){
+  root.innerHTML="";
+  root.appendChild(topbar());
+  const w=h("div",{class:"wrap"});
+  w.appendChild(toolbar());
+  if(VIEW==="day") w.appendChild(dayView());
+  if(VIEW==="week") w.appendChild(weekView());
+  if(VIEW==="month") w.appendChild(monthView());
+  w.appendChild(legend());
+  w.appendChild(footer());
+  root.appendChild(w);
+}
+
+function topbar(){
+  return h("header",{class:"topbar"},[ h("div",{class:"topbar-in"},[
+    h("div",{class:"brand"},[
+      h("div",{class:"brand-mark"},[h("img",{src:LOGO,alt:"Elite Feet Dance Studio"})]),
+      h("div",{},[
+        h("div",{class:"brand-eyebrow",text:"Elite Feet Dance Studio"}),
+        h("div",{class:"brand-name",text:"Mark's Teaching Schedule"}),
+        h("div",{class:"brand-sub",text:"2026–27 season · pre-season camp through Nationals"})
+      ])
+    ]),
+    h("div",{class:"spacer"}),
+    h("div",{class:"print-only",style:"font-size:12px;color:var(--ink-3)"})
+  ])]);
+}
+
+function toolbar(){
+  const tabs=h("div",{class:"tabs",role:"tablist"});
+  [["day","Day"],["week","Week"],["month","Month"]].forEach(function(p){
+    tabs.appendChild(h("button",{class:"tab",role:"tab","aria-selected":VIEW===p[0]?"true":"false",text:p[1],
+      onclick:function(){ VIEW=p[0]; render(); }}));
+  });
+  return h("div",{class:"toolbar"},[
+    tabs,
+    h("div",{class:"nav"},[
+      h("button",{class:"iconbtn","aria-label":"Previous",html:"&#8249;",onclick:function(){ shift(-1); }}),
+      h("button",{class:"iconbtn","aria-label":"Next",html:"&#8250;",onclick:function(){ shift(1); }}),
+      h("button",{class:"btn",text:"Today",onclick:function(){ CURSOR=today(); render(); }})
+    ]),
+    h("div",{class:"range-title",text:rangeLabel()}),
+    h("div",{class:"spacer"}),
+    h("button",{class:"btn",text:SHOW_OTHERS?"Hide studio-wide":"Show studio-wide",
+      onclick:function(){ SHOW_OTHERS=!SHOW_OTHERS; render(); }}),
+    h("button",{class:"btn",text:"Print",onclick:function(){ window.print(); }})
+  ]);
+}
+function shift(dir){
+  const c=cursor();
+  if(VIEW==="day") CURSOR=addDays(c,dir);
+  if(VIEW==="week") CURSOR=addDays(c,dir*7);
+  if(VIEW==="month") CURSOR=new Date(c.getFullYear(),c.getMonth()+dir,1);
+  render();
+}
+function cursor(){
+  if(!CURSOR){ const t=today(), a=fromYmd(SEASON.scheduleStart); CURSOR = t<a ? a : t; }
+  return CURSOR;
+}
+function rangeLabel(){
+  const c=cursor();
+  if(VIEW==="day") return DOW_LONG[c.getDay()]+", "+MON_LONG[c.getMonth()]+" "+c.getDate();
+  if(VIEW==="week"){
+    const m=mondayOf(c), s=addDays(m,6);
+    return m.getMonth()===s.getMonth()
+      ? MON_LONG[m.getMonth()]+" "+m.getDate()+"–"+s.getDate()+", "+s.getFullYear()
+      : fmtShort(m)+" – "+fmtShort(s)+", "+s.getFullYear();
+  }
+  return MON_LONG[c.getMonth()]+" "+c.getFullYear();
+}
+
+function evBlock(ev){
+  const meta=[];
+  if(ev.group) meta.push(ev.group);
+  if(ev.room) meta.push(ev.room);
+  if(ev.with) meta.push("with "+ev.with);
+  if(ev.by && !ev.mine) meta.push(ev.by);
+  if(ev.by && ev.mine && ev.kind==="camp") meta.push(ev.by);
+  return h("div",{class:"ev"+(ev.mine?"":" is-other")+(ev.kind==="comp"?" is-comp":""),
+    style:kstyle(ev.mine?ev.kind:"other")},[
+    h("div",{class:"ev-main"},[
+      h("div",{class:"ev-time",text: ev.allDay ? ("all day · day "+ev.dayNo+" of "+ev.dayCount) : fmtRange(ev.s,ev.e)}),
+      h("div",{class:"ev-title",text:ev.title}),
+      meta.length?h("div",{class:"ev-meta",text:meta.join(" · ")}):null
+    ])
+  ]);
+}
+
+/* ---------- day ---------- */
+function dayView(){
+  const d=cursor(), list=shown(d), cp=compOn(d);
+  const body=h("div",{class:"day-list"});
+  if(!inSchedule(d)) body.appendChild(offSeason(d));
+  else if(!list.length) body.appendChild(h("div",{class:"empty"},[
+    h("h3",{text:"Nothing scheduled"}),
+    h("p",{text:"No classes or rehearsals this day."})]));
+  else list.forEach(function(e){ if(e.kind!=="comp") body.appendChild(evBlock(e)); });
+
+  return h("section",{class:"card"},[
+    h("div",{class:"day-head"},[
+      h("div",{class:"day-dow",text:DOW_LONG[d.getDay()]}),
+      h("div",{class:"day-date",text:MON_LONG[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear()
+        +(sameDay(d,today())?" · today":"")})
+    ]),
+    cp?h("div",{style:"padding:14px 0 0"},[
+      h("div",{class:"banner",style:kstyle("comp")},[h("span",{class:"dot"}),
+        h("span",{text:"At "+cp.title+" — "+cp.room+" (day "+cp.dayNo+" of "+cp.dayCount+")"})])]):null,
+    body
+  ]);
+}
+function offSeason(d){
+  const a=fromYmd(SEASON.scheduleStart);
+  return h("div",{class:"empty"},[
+    h("h3",{text: d<a ? "Before the season starts" : "After the season ends"}),
+    h("p",{text:"This schedule covers "+fmtDate(a)+" through "+fmtDate(fromYmd(SEASON.scheduleEnd))+"."})]);
+}
+
+/* ---------- week ---------- */
+function weekView(){
+  const m=mondayOf(cursor()), days=[];
+  for(let i=0;i<7;i++) days.push(addDays(m,i));
+  const grid=h("div",{class:"week-grid"});
+  days.forEach(function(d){
+    const list=shown(d), body=h("div",{class:"wcol-body"});
+    if(!list.length) body.appendChild(h("div",{class:"wempty",text:inSchedule(d)?"—":"off season"}));
+    else list.forEach(function(e){
+      const b=evBlock(e); b.style.cursor="pointer";
+      b.addEventListener("click",function(){ CURSOR=d; VIEW="day"; render(); });
+      body.appendChild(b);
+    });
+    grid.appendChild(h("div",{class:"wcol"+(sameDay(d,today())?" is-today":"")},[
+      h("button",{class:"wcol-head",onclick:function(){ CURSOR=d; VIEW="day"; render(); }},[
+        h("span",{class:"wcol-dow",text:DOW_SHORT[d.getDay()]}),
+        h("span",{class:"wcol-num",text:fmtShort(d)})]),
+      body
+    ]));
+  });
+  return h("div",{class:"week-scroll"},[grid]);
+}
+
+/* ---------- month ---------- */
+function monthView(){
+  const c=cursor(), first=new Date(c.getFullYear(),c.getMonth(),1), start=mondayOf(first);
+  const grid=h("div",{class:"mgrid"});
+  ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].forEach(function(x){ grid.appendChild(h("div",{class:"mdow",text:x})); });
+  for(let i=0;i<42;i++){
+    const d=addDays(start,i), out=d.getMonth()!==c.getMonth();
+    const evs=shown(d), dots=h("div",{class:"mdots"}), by={};
+    evs.forEach(function(e){ const k=e.mine?e.kind:"other"; by[k]=(by[k]||0)+1; });
+    Object.keys(by).forEach(function(k){
+      dots.appendChild(h("span",{class:"mchip",style:kstyle(k),
+        text: k==="comp" ? KIND[k].label : KIND[k].label+" ×"+by[k]}));
+      dots.appendChild(h("span",{class:"mdot-only",style:kstyle(k)}));
+    });
+    grid.appendChild(h("button",{
+      class:"mcell"+(out?" is-out":"")+(sameDay(d,today())?" is-today":""),
+      onclick:function(){ CURSOR=d; VIEW="day"; render(); },
+      "aria-label":fmtDate(d)
+    },[
+      h("div",{style:"display:flex;justify-content:space-between;align-items:center"},[
+        h("span",{class:"mnum",text:String(d.getDate())})]),
+      dots
+    ]));
+    if(i>=34 && addDays(start,i+1).getMonth()!==c.getMonth()) break;
+  }
+  return grid;
+}
+
+function legend(){
+  const l=h("div",{class:"legend"});
+  ["class","company","camp","private","comp"].forEach(function(k){
+    l.appendChild(h("span",{style:kstyle(k)},[h("span",{class:"dot"}),h("span",{text:KIND[k].label})]));
+  });
+  if(SHOW_OTHERS) l.appendChild(h("span",{style:kstyle("other")},[h("span",{class:"dot"}),
+    h("span",{text:"Other faculty"})]));
+  return l;
+}
+function footer(){
+  return h("div",{class:"foot"},[
+    h("span",{text:"Pre-season camp Aug 24 – Sep 12"}),
+    h("span",{text:"Weekly classes from Sep 14"}),
+    h("span",{text:"Company 1 · 2nd & 4th Fri"}),
+    h("span",{text:"Company 2 · 1st, 3rd & 5th Fri"}),
+    h("span",{text:"Company 3 · 1st, 3rd & 5th Sat"})
+  ]);
+}
+
+render();
+})();
+</script>
+
+</body>
+</html>
